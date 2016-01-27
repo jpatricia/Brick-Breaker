@@ -1,17 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
-import java.awt.geom.Ellipse2D;
-import java.util.ArrayList;
 
-/**
- * Created by Janice on 1/22/2016.
- */
 public class Paddle extends JComponent {
+    double x,y;
     // Constructor for SimpleDraw
-    public Paddle() {
+    public Paddle(double x_, double y_) {
+        x = x_;
+        y = y_;
     }
 
     public void paintPaddle(Graphics g, JComponent view) {
@@ -20,13 +15,21 @@ public class Paddle extends JComponent {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
+
+        System.out.println("x "+x);
+        System.out.println("y "+y);
         //drawing the paddle
-        int height = view.getHeight()*3/100;
-        int width = view.getWidth()*10/100;
-        int xOffset = view.getWidth()/2;
-        int yOffset = view.getHeight()*95/100;
+        int height = view.getHeight()*2/100;        // height of paddle
+        int width = view.getWidth()*10/100;         // width of paddle
+        int tempx = (int)(view.getWidth()*x/100);         // x coordinates
+        int tempy = (int)(view.getHeight()*y/100);        // y coordinates
+
+        System.out.println("height "+height);
+        System.out.println("width "+width);
+        System.out.println("tempx "+tempx);
+        System.out.println("(w/2) "+(width/2));
+
         g2.setColor(Color.orange);
-        g2.drawRoundRect(xOffset-(width/2),yOffset,width,height,15,15); // draw the paddle(rounded rectangle)
-        g2.fillRoundRect(xOffset-(width/2),yOffset,width,height,15,15); // fill paddle with orange
+        g2.fillRoundRect(tempx-(width/2),tempy,width,height,15,15); // draw and fill paddle with orange
     }
 }
