@@ -37,6 +37,9 @@ class Breakout {
 
     }
 
+    double xmove = -1;
+    double ymove = -1;
+
     // model keeps track of game state (objects in the game)
     // contains a Timer that ticks periodically to advance the game
     // AND calls an update() method in the View to tell it to redraw
@@ -44,26 +47,58 @@ class Breakout {
 
         //create new ball, paddle and timer
         Ball ball;
-        Paddle paddle ;
+        Paddle paddle;
         Timer timer;
-
-
+        Timer balltimer;
 
         //initialize the left and right key
         boolean  leftKey = false, rightKey = false;
 
         //constructor of model
         public Model(){
-            ball = new Ball(0.50,0.94);
-            paddle = new Paddle(50, 95);
-            timer = new Timer(25,timerListener);
-            timer.start();
+            ball = new Ball(50,94,23);
+            paddle = new Paddle(50, 95, 78, 10);
+            timer = new Timer(40,timerListener);
+            balltimer = new Timer(50,timerballListen);
+           // timer.start();
+            balltimer.start();
         }
 
         ActionListener timerListener = new ActionListener(){
+            public void actionPerformed(ActionEvent e) {}};
+
+        ActionListener timerballListen = new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                ball.x +=0.001;
-                ball.y -=0.001;
+
+                ball.x-=xmove;
+                ball.y+=ymove;
+                if((ball.y/100) <= 0.00) {
+                    System.out.println("top-wall");
+                    ymove = -ymove;
+                }
+                if((ball.x/100) <= 0.00 || ball.x/100 >=1.00 ){
+                    System.out.println("left-right-wall");
+                    xmove = -xmove;
+                }
+//                System.out.println("paddle.getpwidth: "+paddle.getPwidth());
+//                System.out.println("paddle.x: "+paddle.x);
+                double pright = (paddle.x/100) + (paddle.getPwidth()/2);
+                double ptop = paddle.y/100;
+                double bbot = (ball.y/100);
+//                System.out.println("--------------");
+//                System.out.println("ball.x: "+ball.x);
+//                System.out.println("paddle.x: "+paddle.x);
+//                System.out.println("pright: "+pright);
+//                System.out.println("ball.y/100: "+ball.y/100);
+//                System.out.println("ptop*100: "+ptop*100);
+//                System.out.println("bbot*100: "+bbot*100);
+                if((bbot*100) == (ptop*100) && ball.x+(ball.getdiam()*100) >= paddle.x && (ball.x/100) <= pright){
+                    System.out.println("hit paddle");
+                    ymove =-Math.abs(ymove);
+                }
+                if((ball.y/100) >= 1.15){
+                    balltimer.stop();
+                }
                 setChanged();
                 notifyObservers();
             }
@@ -80,13 +115,15 @@ class Breakout {
         @Override
         public void keyPressed(KeyEvent e){
             int key = e.getKeyCode();
-            if(key == KeyEvent.VK_LEFT) {
+
+            System.out.println(paddle.x/100);
+            if(key == KeyEvent.VK_LEFT && (paddle.x/100) >=0.1) {
                 moveLeft();
                 leftKey = true;
                 setChanged();
                 notifyObservers();
             }
-            if(key == KeyEvent.VK_RIGHT) {
+            if(key == KeyEvent.VK_RIGHT && (paddle.x/100) <= 0.9) {
                 moveRight();
                 rightKey = true;
                 setChanged();
@@ -111,12 +148,12 @@ class Breakout {
 
         // left key move coordinate
         public void moveLeft(){
-            paddle.x--;
+            paddle.x-=2;
             System.out.println("paddle.x left "+paddle.x);
         }
         //right key move coordinate
         public void moveRight(){
-            paddle.x++;
+            paddle.x+=2;
             System.out.println("paddle.x right "+paddle.x);
         }
 
@@ -129,9 +166,10 @@ class Breakout {
     class View extends JComponent implements Observer{
         private Model model;
 
+
         //constructor of View
         public View(Model model_) {
-            model =model_;
+            model=model_;
         }
 
         //paint on the view

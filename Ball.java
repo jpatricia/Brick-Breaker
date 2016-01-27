@@ -3,10 +3,11 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
 public class Ball extends JComponent{
-    double x,y;
-    public Ball(double x_, double y_){
+    double x,y,d;
+    public Ball(double x_, double y_, double d_){
         x = x_;
         y = y_;
+        d = d_;
     }
     public void paintBall(Graphics g, JComponent view) {
 
@@ -14,9 +15,11 @@ public class Ball extends JComponent{
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         //drawing the ball
-        int xOffset= (int)(view.getWidth()*x);
-        int yOffset= (int)(view.getHeight()*y);
+        int xOffset= (int)(view.getWidth()*x/100);
+        int yOffset= (int)(view.getHeight()*y/100);
         int diameter= view.getWidth()*2/100;
+
+        d = diameter;
 
         Ellipse2D shape = new Ellipse2D.Float();
         shape.setFrame(xOffset-(diameter-7),yOffset-diameter,diameter,diameter);
@@ -24,6 +27,10 @@ public class Ball extends JComponent{
         g2.draw(shape); //draw the ball(circle)
         g2.fill(shape); //fill ball with red
 
+    }
+
+    public double getdiam(){
+        return (d-7)/100;
     }
 
 }
