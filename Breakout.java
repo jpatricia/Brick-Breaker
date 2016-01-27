@@ -57,7 +57,7 @@ class Breakout {
             ball = new Ball(0.50,0.94);
             paddle = new Paddle(50, 95);
             timer = new Timer(25,timerListener);
-           // timer.start();
+            timer.start();
         }
 
         ActionListener timerListener = new ActionListener(){
