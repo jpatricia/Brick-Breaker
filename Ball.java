@@ -21,16 +21,31 @@ public class Ball extends JComponent{
 
         d = diameter;
 
-        Ellipse2D shape = new Ellipse2D.Float();
-        shape.setFrame(xOffset-(diameter-7),yOffset-diameter,diameter,diameter);
+      //  Ellipse2D shape = new Ellipse2D.Float();
+      //  shape.setFrame(xOffset-(diameter-7),yOffset-diameter,diameter,diameter);
         g2.setColor(Color.RED);
-        g2.draw(shape); //draw the ball(circle)
-        g2.fill(shape); //fill ball with red
+        g2.fillRoundRect(xOffset-diameter,yOffset-diameter,diameter,diameter,30,30); // draw and fill paddle with orange
 
     }
 
     public double getdiam(){
-        return (d-7)/100;
+        return d/100;
+    }
+
+    public int btopleftx(){
+        return (int)x;
+    }
+
+    public int btoplefty(){
+        return (int)y;
+    }
+
+    public int bbotrightx(){
+        return (int)(x+d);
+    }
+
+    public int bbotrighty(){
+        return (int)(y+d);
     }
 
 }
