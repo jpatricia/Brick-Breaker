@@ -32,20 +32,4 @@ public class Ball extends JComponent{
         return d/100;
     }
 
-    public int btopleftx(){
-        return (int)x;
-    }
-
-    public int btoplefty(){
-        return (int)y;
-    }
-
-    public int bbotrightx(){
-        return (int)(x+d);
-    }
-
-    public int bbotrighty(){
-        return (int)(y+d);
-    }
-
 }
