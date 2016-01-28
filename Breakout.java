@@ -25,7 +25,7 @@ class Breakout {
         model.notifyObservers();
 
         // Splash Window
-        Splashwin splash = new Splashwin();
+  //      Splashwin splash = new Splashwin();
 
         //setting up the game window
         JFrame f = new JFrame("Breakout"); // jframe is the app window
@@ -36,7 +36,18 @@ class Breakout {
         f.setLocationRelativeTo(null);
         f.setVisible(true); // show the window
 
+      //  JOptionPane.showMessageDialog(f,"Click to start game ","Start Game",JOptionPane.PLAIN_MESSAGE);
+
         f.addKeyListener(model);
+        f.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.out.println("clicked");
+                if(model.pause) model.start();
+                else model.pause();
+            }
+        });
 
     }
 
@@ -79,19 +90,22 @@ class Breakout {
             }
 
             timer = new Timer((1/fps)*1000,timerListener);
-            balltimer = new Timer(speed,timerballListen);
+            balltimer = new Timer((1/speed)*1000,timerballListen);
 
         }
 
         public void start(){
+            pause = false;
             timer.start();
             balltimer.start();
         }
 
         public void pause(){
+            pause = true;
             balltimer.stop();
             timer.stop();
         }
+
 
         ActionListener timerListener = new ActionListener(){
             public void actionPerformed(ActionEvent e) {
@@ -118,16 +132,6 @@ class Breakout {
                 double bbot = (ball.y/100);
                 double xleft=(bbot*100) - (ptop*100);
 
-//                System.out.println("--------------");
-//                System.out.println("ball.getdiam(): "+ball.getdiam());
-//                System.out.println("ball.x+(ball.getdiam()*100) "+(ball.x+(ball.getdiam()*100)));
-//                System.out.println("ball.x: "+ball.x);
-//                System.out.println("paddle.x: "+paddle.x);
-//                System.out.println("pright: "+pright);
-//                System.out.println("ball.y/100: "+ball.y/100);
-//                System.out.println("ptop*100: "+ptop*100);
-//                System.out.println("bbot*100: "+bbot*100);
-
                 if((xleft<=1.00 && xleft>0.00) && (ball.x+(ball.getdiam()*100)) >= paddle.x && (ball.x/100) <= pright){
                     System.out.println("hit paddle");
                     ymove =-Math.abs(ymove);
@@ -153,9 +157,6 @@ class Breakout {
                         score+=10;
                     }
                 }
-
-               // setChanged();
-              //  notifyObservers();
             }
         };
 
@@ -188,9 +189,6 @@ class Breakout {
                     pause = false;
                     start();
                 }
-            }
-            if(key == KeyEvent.VK_Q){
-                //quit();
             }
         }
 
@@ -230,24 +228,11 @@ class Breakout {
             double y3 = ball.y;
             double x4 = ball.x + ball.getdiam();
             double y4 = ball.y + ball.getdiam();
-//            System.out.println("intersectCheck");
-//            System.out.println("x1: "+x1);
-//            System.out.println("y1: "+y1);
-//            System.out.println("x2: "+x2);
-//            System.out.println("y2: "+y2);
-//            System.out.println("x3: "+x3);
-//            System.out.println("y3: "+y3);
-//            System.out.println("x4: "+x4);
-//            System.out.println("y4: "+y4);
-//
-//            System.out.println("ball.x: "+ball.x);
-//            System.out.println("ball.y: "+ball.y);
 
             if(!(x2<x3 || x4<x1 || y2<y3 || y4<y1)){
                 System.out.println("if stmt");
                 hit = true;
             }
-
 
             return hit;
         }
@@ -275,7 +260,15 @@ class Breakout {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
 
+            //top left corner, score of the game
             g2.drawString("Score: "+model.score,20,20);
+
+            //top right corner, start button
+
+            g2.setColor(Color.BLACK);
+            g2.drawString("Start/Pause",4+this.getWidth()*8/10,20);
+            g2.setFont(new Font("Arial", Font.PLAIN, 16));
+
             //draw the blocks
             for (Block block : model.BlockList) {
                 int j = 1;    // row 1-5
@@ -298,7 +291,7 @@ class Breakout {
 
     // entry point for the application
     public static void main(String[] args) {
-        int fps=25,bspeed=35;
+        int fps=30,bspeed=10;
 
         if(args.length >0){
             try {
