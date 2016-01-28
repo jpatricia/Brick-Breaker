@@ -25,7 +25,7 @@ class Breakout {
         model.notifyObservers();
 
         // Splash Window
-        // Splashwin splash = new Splashwin();
+        Splashwin splash = new Splashwin();
 
         //setting up the game window
         JFrame f = new JFrame("Breakout"); // jframe is the app window
@@ -57,7 +57,7 @@ class Breakout {
 
 
         //initialize the left and right key
-        boolean  leftKey = false, rightKey = false;
+        boolean  leftKey = false, rightKey = false, pause = true;
 
         //constructor of model
         public Model(int fps_, int speed_){
@@ -80,9 +80,17 @@ class Breakout {
 
             timer = new Timer((1/fps)*1000,timerListener);
             balltimer = new Timer(speed,timerballListen);
+
+        }
+
+        public void start(){
             timer.start();
             balltimer.start();
+        }
 
+        public void pause(){
+            balltimer.stop();
+            timer.stop();
         }
 
         ActionListener timerListener = new ActionListener(){
@@ -167,14 +175,22 @@ class Breakout {
             if(key == KeyEvent.VK_LEFT && paddle.x >=10) {
                 moveLeft();
                 leftKey = true;
-             //   setChanged();
-            //    notifyObservers();
             }
             if(key == KeyEvent.VK_RIGHT && paddle.x <= 90) {
                 moveRight();
                 rightKey = true;
-              //  setChanged();
-             //   notifyObservers();
+            }
+            if(key == KeyEvent.VK_SPACE) {
+                if(!pause){
+                    pause = true;
+                    pause();
+                }else{
+                    pause = false;
+                    start();
+                }
+            }
+            if(key == KeyEvent.VK_Q){
+                //quit();
             }
         }
 

@@ -12,7 +12,7 @@ public class Block extends JComponent{
         hit = false;
     }
 
-    public void paintBlock(Graphics g, JComponent view, int i, int j){
+    public void paintBlock(Graphics g, JComponent view, int i){
         Graphics2D g2 = (Graphics2D) g;               // 2D drawing
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
@@ -30,25 +30,8 @@ public class Block extends JComponent{
         g2.setStroke(new BasicStroke(2));
         g2.drawRect(block_x, block_y, blockWidth, blockHeight);
         g2.setStroke(g2.getStroke());
-        if(hit == true) clear(g,block_x,block_y,blockWidth, blockHeight);
-        else fill(g,block_x,block_y,blockWidth, blockHeight);
+        g2.setColor(Color.DARK_GRAY);
+        g2.fillRect(block_x, block_y, blockWidth, blockHeight);
 
     }
-
-    public void clear(Graphics g, double x1, double y1, double w1, double h1){
-      //  System.out.println("clear method");
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect((int)x1,(int)y1,(int)w1,(int)h1);
-    }
-
-    public void fill(Graphics g, double x1, double y1, double w1, double h1){
-      //  System.out.println("fill method");
-        g.setColor(Color.DARK_GRAY);
-        g.fillRect((int)x1,(int)y1,(int)w1,(int)h1);
-    }
-
-    public boolean hit(){
-        return hit;
-    }
-
 }
