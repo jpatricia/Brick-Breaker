@@ -25,7 +25,7 @@ class Breakout {
         model.notifyObservers();
 
         // Splash Window
-  //      Splashwin splash = new Splashwin();
+        Splashwin splash = new Splashwin();
 
         //setting up the game window
         JFrame f = new JFrame("Breakout"); // jframe is the app window
@@ -35,8 +35,6 @@ class Breakout {
         view.setLayout(new FlowLayout(FlowLayout.LEADING));
         f.setLocationRelativeTo(null);
         f.setVisible(true); // show the window
-
-      //  JOptionPane.showMessageDialog(f,"Click to start game ","Start Game",JOptionPane.PLAIN_MESSAGE);
 
         f.addKeyListener(model);
         f.addMouseListener(new MouseAdapter() {
@@ -144,7 +142,6 @@ class Breakout {
                 for(int i=0;i<BlockList.size();i++){
                     //this for loop will go through the blocks abd see
                     //if the ball intersects with a block or not
-                   // System.out.println(i);
 
                     double topLeftX = BlockList.get(i).x;
                     double topLeftY = BlockList.get(i).y;
@@ -172,7 +169,6 @@ class Breakout {
         public void keyPressed(KeyEvent e){
             int key = e.getKeyCode();
 
-            System.out.println(paddle.x);
             if(key == KeyEvent.VK_LEFT && paddle.x >=10) {
                 moveLeft();
                 leftKey = true;
@@ -230,7 +226,6 @@ class Breakout {
             double y4 = ball.y + ball.getdiam();
 
             if(!(x2<x3 || x4<x1 || y2<y3 || y4<y1)){
-                System.out.println("if stmt");
                 hit = true;
             }
 
