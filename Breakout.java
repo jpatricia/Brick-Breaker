@@ -9,12 +9,15 @@ import java.util.Observer;
 
 // top-level container class
 class Breakout {
-
+    int fps,speed;
     // constructor for the game
     // instantiates all of the top-level classes (model, view)
     // and tells the model to start the game
-    Breakout() {
-        Model model = new Model();
+    Breakout(int fps_, int bspeed_) {
+        //initialization
+        fps = fps_;
+        speed = bspeed_;
+        Model model = new Model(fps,speed);
         View view = new View(model);
 
         // update the view
@@ -37,14 +40,14 @@ class Breakout {
 
     }
 
-    double xmove = -1;
-    double ymove = -1;
+    double xmove = -2;
+    double ymove = -2;
 
     // model keeps track of game state (objects in the game)
     // contains a Timer that ticks periodically to advance the game
     // AND calls an update() method in the View to tell it to redraw
     class Model extends Observable implements KeyListener{
-
+        int fps,speed;
         //create new ball, paddle and timer
         Ball ball;
         Paddle paddle;
@@ -57,9 +60,12 @@ class Breakout {
         boolean  leftKey = false, rightKey = false;
 
         //constructor of model
-        public Model(){
+        public Model(int fps_, int speed_){
             ball = new Ball(50,94,23);
             paddle = new Paddle(50, 95, 78, 10);
+
+            fps = fps_;
+            speed = speed_;
 
             int j=0;    // row 1-5
             int k=0;
@@ -69,20 +75,21 @@ class Breakout {
                     k=0;
                 }
                 k++;
-                System.out.println(i);
-                System.out.println(j);
                 BlockList.add(i, new Block((40+1)*k,30*j,40,30));
             }
 
-            timer = new Timer(40,timerListener);
-            balltimer = new Timer(70,timerballListen);
-            // timer.start();
+            timer = new Timer((1/fps)*1000,timerListener);
+            balltimer = new Timer(speed,timerballListen);
+             timer.start();
             balltimer.start();
 
         }
 
         ActionListener timerListener = new ActionListener(){
-            public void actionPerformed(ActionEvent e) {}};
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers();
+            }};
 
         ActionListener timerballListen = new ActionListener(){
             public void actionPerformed(ActionEvent e) {
@@ -101,6 +108,7 @@ class Breakout {
                 double pright = (paddle.x/100) + (paddle.getPwidth()/2);
                 double ptop = paddle.y/100;
                 double bbot = (ball.y/100);
+                double xleft=(bbot*100) - (ptop*100);
 
                 System.out.println("--------------");
                 System.out.println("ball.getdiam(): "+ball.getdiam());
@@ -112,7 +120,7 @@ class Breakout {
                 System.out.println("ptop*100: "+ptop*100);
                 System.out.println("bbot*100: "+bbot*100);
 
-                if((bbot*100) == (ptop*100) && (ball.x+(ball.getdiam()*100)) >= paddle.x && (ball.x/100) <= pright){
+                if((xleft<=1.00 && xleft>0.00) && (ball.x+(ball.getdiam()*100)) >= paddle.x && (ball.x/100) <= pright){
                     System.out.println("hit paddle");
                     ymove =-Math.abs(ymove);
                 }
@@ -137,8 +145,8 @@ class Breakout {
                     }
                 }
 
-                setChanged();
-                notifyObservers();
+               // setChanged();
+              //  notifyObservers();
             }
         };
 
@@ -158,14 +166,14 @@ class Breakout {
             if(key == KeyEvent.VK_LEFT && paddle.x >=10) {
                 moveLeft();
                 leftKey = true;
-                setChanged();
-                notifyObservers();
+             //   setChanged();
+            //    notifyObservers();
             }
             if(key == KeyEvent.VK_RIGHT && paddle.x <= 90) {
                 moveRight();
                 rightKey = true;
-                setChanged();
-                notifyObservers();
+              //  setChanged();
+             //   notifyObservers();
             }
         }
 
@@ -251,24 +259,17 @@ class Breakout {
                     RenderingHints.VALUE_ANTIALIAS_ON);
 
             //draw the blocks
-            for(Block block:model.BlockList){
-                int j=1;    // row 1-5
-                for(int i=0;i<50;i++){
-                    if(i%10==0) j++;
-                    block.paintBlock(g,this,i,j);
+            for (Block block : model.BlockList) {
+                int j = 1;    // row 1-5
+                for (int i = 0; i < 50; i++) {
+                    if (i % 10 == 0) j++;
+                    block.paintBlock(g, this, i, j);
                 }
             }
 
             //draw the ball and paddle
             model.paintBall(g, this);
-            model.paintPaddle(g,this);
-
-            //actionListener for the ball
-//            model.b.addActionListener(new ActionListener(){
-//               public void actionPerformed(ActionEvent e){
-//                   System.out.println("ball action listener");
-//               }
-//            });
+            model.paintPaddle(g, this);
         }
 
         @Override //update the view by repainting the canvas
@@ -279,6 +280,17 @@ class Breakout {
 
     // entry point for the application
     public static void main(String[] args) {
-        Breakout game = new Breakout();
+        int fps=25,bspeed=60;
+
+        if(args.length >0){
+            try {
+                fps = Integer.parseInt(args[0]);
+                bspeed = Integer.parseInt(args[1]);
+            } catch (NumberFormatException e) {
+                System.err.println("Argument" + args[0] + " must be an integer.");
+                System.exit(1);
+            }
+        }
+        Breakout game = new Breakout(fps,bspeed);
     }
 }
