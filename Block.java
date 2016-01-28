@@ -3,13 +3,11 @@ import javax.swing.*;
 
 public class Block extends JComponent{
     double x,y,w,h;
-    boolean hit;
     public Block(double x_, double y_, double w_, double h_){
         x=x_;
         y=y_;
         w=w_;
         h=h_;
-        hit = false;
     }
 
     public void paintBlock(Graphics g, JComponent view, int i){
@@ -30,8 +28,18 @@ public class Block extends JComponent{
         g2.setStroke(new BasicStroke(2));
         g2.drawRect(block_x, block_y, blockWidth, blockHeight);
         g2.setStroke(g2.getStroke());
-        g2.setColor(Color.DARK_GRAY);
-        g2.fillRect(block_x, block_y, blockWidth, blockHeight);
+
+        System.out.println(i);
+        if(y <=40 || (y>=80 && y<=100) || (y>=140 && y<=160)){
+            g2.setColor(Color.DARK_GRAY);
+            g2.fillRect(block_x,block_y,blockWidth, blockHeight);
+        }
+
+        else {
+            g2.setColor(Color.LIGHT_GRAY);
+            g2.fillRect(block_x,block_y,blockWidth, blockHeight);
+        }
 
     }
+
 }
