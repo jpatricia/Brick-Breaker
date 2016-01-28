@@ -87,9 +87,6 @@ class Breakout {
         ActionListener timerballListen = new ActionListener(){
             public void actionPerformed(ActionEvent e) {
 
-//                System.out.println("ball.x: "+ball.btopleftx());
-//                System.out.println("ball.y: "+ball.btoplefty());
-
                 ball.x-=xmove;
                 ball.y+=ymove;
                 if((ball.y/100) <= 0.00) {
@@ -105,20 +102,29 @@ class Breakout {
                 double ptop = paddle.y/100;
                 double bbot = (ball.y/100);
 
-                if((bbot*100) == (ptop*100) && ball.x >= paddle.x && (ball.x/100) <= pright){
+                System.out.println("--------------");
+                System.out.println("ball.getdiam(): "+ball.getdiam());
+                System.out.println("ball.x+(ball.getdiam()*100) "+(ball.x+(ball.getdiam()*100)));
+                System.out.println("ball.x: "+ball.x);
+                System.out.println("paddle.x: "+paddle.x);
+                System.out.println("pright: "+pright);
+                System.out.println("ball.y/100: "+ball.y/100);
+                System.out.println("ptop*100: "+ptop*100);
+                System.out.println("bbot*100: "+bbot*100);
+
+                if((bbot*100) == (ptop*100) && (ball.x+(ball.getdiam()*100)) >= paddle.x && (ball.x/100) <= pright){
                     System.out.println("hit paddle");
                     ymove =-Math.abs(ymove);
                 }
-
-
-             //   if(ball.x == 92 && ball.y ==36) balltimer.stop();
 
                 if((ball.y/100) >= 1.15){
                     balltimer.stop();
                 }
 
                 for(int i=0;i<BlockList.size();i++){
-                    System.out.println(i);
+                    //this for loop will go through the blocks abd see
+                    //if the ball intersects with a block or not
+                   // System.out.println(i);
 
                     double topLeftX = BlockList.get(i).x;
                     double topLeftY = BlockList.get(i).y;
@@ -199,35 +205,18 @@ class Breakout {
             double y3 = ball.y;
             double x4 = ball.x + ball.getdiam();
             double y4 = ball.y + ball.getdiam();
-            System.out.println("intersectCheck");
-            System.out.println("x1: "+x1);
-            System.out.println("y1: "+y1);
-            System.out.println("x2: "+x2);
-            System.out.println("y2: "+y2);
-            System.out.println("x3: "+x3);
-            System.out.println("y3: "+y3);
-            System.out.println("x4: "+x4);
-            System.out.println("y4: "+y4);
-
-            System.out.println("ball.x: "+ball.x);
-            System.out.println("ball.y: "+ball.y);
-
-//            if(ball.contains((int)x1,(int)y1)){
-//                System.out.println("topleft hit");
-//                hit = true;
-//            }
-//            if(ball.contains((int)x2,(int)y1)){
-//                System.out.println("topright hit");
-//                hit = true;
-//            }
-//            if(ball.contains((int)x1,(int)y2)){
-//                System.out.println("botleft hit");
-//                hit = true;
-//            }
-//            if(ball.contains((int)x2,(int)y2)){
-//                System.out.println("botright hit");
-//                hit = true;
-//            }
+//            System.out.println("intersectCheck");
+//            System.out.println("x1: "+x1);
+//            System.out.println("y1: "+y1);
+//            System.out.println("x2: "+x2);
+//            System.out.println("y2: "+y2);
+//            System.out.println("x3: "+x3);
+//            System.out.println("y3: "+y3);
+//            System.out.println("x4: "+x4);
+//            System.out.println("y4: "+y4);
+//
+//            System.out.println("ball.x: "+ball.x);
+//            System.out.println("ball.y: "+ball.y);
 
             if(!(x2<x3 || x4<x1 || y2<y3 || y4<y1)){
                 System.out.println("if stmt");

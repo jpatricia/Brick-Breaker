@@ -36,13 +36,13 @@ public class Block extends JComponent{
     }
 
     public void clear(Graphics g, double x1, double y1, double w1, double h1){
-        System.out.println("clear method");
+      //  System.out.println("clear method");
         g.setColor(Color.LIGHT_GRAY);
         g.fillRect((int)x1,(int)y1,(int)w1,(int)h1);
     }
 
     public void fill(Graphics g, double x1, double y1, double w1, double h1){
-        System.out.println("fill method");
+      //  System.out.println("fill method");
         g.setColor(Color.DARK_GRAY);
         g.fillRect((int)x1,(int)y1,(int)w1,(int)h1);
     }
