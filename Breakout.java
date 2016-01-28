@@ -40,14 +40,14 @@ class Breakout {
 
     }
 
-    double xmove = -2;
-    double ymove = -2;
+    double xmove = -1;
+    double ymove = -1;
 
     // model keeps track of game state (objects in the game)
     // contains a Timer that ticks periodically to advance the game
     // AND calls an update() method in the View to tell it to redraw
     class Model extends Observable implements KeyListener{
-        int fps,speed;
+        int fps,speed,score;
         //create new ball, paddle and timer
         Ball ball;
         Paddle paddle;
@@ -80,7 +80,7 @@ class Breakout {
 
             timer = new Timer((1/fps)*1000,timerListener);
             balltimer = new Timer(speed,timerballListen);
-             timer.start();
+            timer.start();
             balltimer.start();
 
         }
@@ -110,15 +110,15 @@ class Breakout {
                 double bbot = (ball.y/100);
                 double xleft=(bbot*100) - (ptop*100);
 
-                System.out.println("--------------");
-                System.out.println("ball.getdiam(): "+ball.getdiam());
-                System.out.println("ball.x+(ball.getdiam()*100) "+(ball.x+(ball.getdiam()*100)));
-                System.out.println("ball.x: "+ball.x);
-                System.out.println("paddle.x: "+paddle.x);
-                System.out.println("pright: "+pright);
-                System.out.println("ball.y/100: "+ball.y/100);
-                System.out.println("ptop*100: "+ptop*100);
-                System.out.println("bbot*100: "+bbot*100);
+//                System.out.println("--------------");
+//                System.out.println("ball.getdiam(): "+ball.getdiam());
+//                System.out.println("ball.x+(ball.getdiam()*100) "+(ball.x+(ball.getdiam()*100)));
+//                System.out.println("ball.x: "+ball.x);
+//                System.out.println("paddle.x: "+paddle.x);
+//                System.out.println("pright: "+pright);
+//                System.out.println("ball.y/100: "+ball.y/100);
+//                System.out.println("ptop*100: "+ptop*100);
+//                System.out.println("bbot*100: "+bbot*100);
 
                 if((xleft<=1.00 && xleft>0.00) && (ball.x+(ball.getdiam()*100)) >= paddle.x && (ball.x/100) <= pright){
                     System.out.println("hit paddle");
@@ -142,6 +142,7 @@ class Breakout {
                     if(gethit){ //block intersect with ball
                         ymove = -ymove;
                         BlockList.remove(i);
+                        score+=10;
                     }
                 }
 
@@ -194,12 +195,12 @@ class Breakout {
 
         // left key move coordinate
         public void moveLeft(){
-            paddle.x-=2;
+            paddle.x-=3;
             System.out.println("paddle.x left "+paddle.x);
         }
         //right key move coordinate
         public void moveRight(){
-            paddle.x+=2;
+            paddle.x+=3;
             System.out.println("paddle.x right "+paddle.x);
         }
 
@@ -258,12 +259,13 @@ class Breakout {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
 
+            g2.drawString("Score: "+model.score,20,20);
             //draw the blocks
             for (Block block : model.BlockList) {
                 int j = 1;    // row 1-5
                 for (int i = 0; i < 50; i++) {
                     if (i % 10 == 0) j++;
-                    block.paintBlock(g, this, i, j);
+                    block.paintBlock(g, this, i);
                 }
             }
 
