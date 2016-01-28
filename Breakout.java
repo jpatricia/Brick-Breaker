@@ -298,7 +298,7 @@ class Breakout {
 
     // entry point for the application
     public static void main(String[] args) {
-        int fps=25,bspeed=60;
+        int fps=25,bspeed=35;
 
         if(args.length >0){
             try {

@@ -29,7 +29,6 @@ public class Block extends JComponent{
         g2.drawRect(block_x, block_y, blockWidth, blockHeight);
         g2.setStroke(g2.getStroke());
 
-        System.out.println(i);
         if(y <=40 || (y>=80 && y<=100) || (y>=140 && y<=160)){
             g2.setColor(Color.DARK_GRAY);
             g2.fillRect(block_x,block_y,blockWidth, blockHeight);
